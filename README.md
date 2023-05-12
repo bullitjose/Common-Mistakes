@@ -66,6 +66,8 @@ this.class=class;
 
 # Common-Mistakes
 
+[10 most common java mistakes](https://www.youtube.com/watch?v=rjDUpxtUPAE&ab_channel=Amigoscode )
+
 >USE ITERATOR.
 
 **Removing Items from a Collection, Iterators are designed to easily change the collections that they loop through**. 
@@ -103,3 +105,138 @@ Iterator<Integer> it = numbers.iterator();
     System.out.println(numbers);
 
 ```
+
+>USE GENERICS.
+
+Exemple:
+```
+ArrayList listOfNumbers=new ArrayList();
+listOfNumbers.add(10);//int
+listOfnumbers.add("20");//String, and COMPILE!!
+```
+
+We only allow Integers:
+```
+ArrayList <Integer> listOfNumbers=new ArrayList<>();
+listOfNumbers.add(10);//int
+listOfnumbers.add("20");//ERROR!!
+
+```
+
+Also change:
+```
+List <Integer> listOfNumbers=new LinkedList<>();
+```
+
+List as interface. LinkedList class  is the implementation we need, or whatever we need!!! Other class that impliment List interface, ArrayList, Vector, Customer, Stack, etc...
+
+>Strings & equals
+
+**never compare string with ==**
+```
+String brand="Pepe";
+String brand1="pepe";
+return brand ==brand2;//ERROR, THEY COMPARE MEMORY LOCATION
+return brand.equals(brand2);//CORRECT
+```
+
+>IFs.
+
+BAD:
+```
+var bool="a".equals("A");//result is true || false
+if(bool==true){
+..
+}
+```
+
+CORRECT:
+```
+if (bool){
+return true;
+}
+
+if(!bool){
+return false;
+}
+```
+**use bool or !bool**
+**We can use ternary operator**
+```
+return age>= 18 ? "Adult" :  "Child";
+```
+
+>Statics()
+
+If we are in:
+```
+public class Mistakes{
+
+    public static void main (Strings[] args){
+
+    statics(); //ERROR, we can`t use statics, here we have 2 options
+    //1st option, if we need a new instance (new Mistakes()) of Mistakes
+    new Mistakes().statics();
+    
+    ....
+    //2nd option, now we don't need a instance 
+    statics();
+
+    }
+    //2nd option, we don't need a new instance of Mistakes, we make static statics()
+    private static void statics(){
+    
+    }
+    
+    }
+```
+
+>Switch()
+
+Don't forget break; after a case:
+```
+swith (caseIndex){
+case 0:
+    System.out.println("zero");
+    //break; //<-------------
+    case 1:
+    System.out.println("one");
+    break;
+default:
+    System.out.println("default");
+
+
+}
+```
+
+>Excessive_garbage_allocation. **StringBuilder**
+
+```
+private void excessive_garbage_allocation(){
+String out ="";
+    for (int i=0; i<1_000_000; i++){ 
+    out +=i;//Error, we create a million of new Strings!!!
+    }
+
+System.out.println(out);
+}
+```
+Better use:
+```
+StringBuilder out = new StringBuilder();
+    for (int i=0; i<1_000_000; i++){ 
+    out.append(i);//Better
+    }
+```
+
+
+# Ternary operator
+
+# GENERICS
+
+# stop using for loops
+
+[](https://www.youtube.com/watch?v=-640IYSEnVE&ab_channel=Amigoscode)
+
+#10 BAD PROGRAMMING HABITS
+[](https://www.youtube.com/watch?v=lyx7HNufwXQ&ab_channel=Amigoscode)
