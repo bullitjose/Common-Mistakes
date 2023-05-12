@@ -1,5 +1,5 @@
 >GIT HUB
-## REPOSITORIO PROYECTO
+# REPOSITORIO PROYECTO
 
 Tenemos un proyecto Git en local, y lo subiremos a GitHub. En local tenemos la carpeta "Hello git" y en GitHub hemos creado el repositorio "hello-git"
 
@@ -13,7 +13,18 @@ $git remote add origin https://github.com/bullitjose/hello-git.git
 $git push -u origin master
 ```
 
++ cambiar remote, para validar con ssh:
+```
+$git remote -v
+origin	https://github.com/bullitjose/hello-git.git (fetch)
+origin	https://github.com/bullitjose/hello-git.git (push)
 
+$git remote set-url origin git@github.com:bullitjose/hello-git.git
+
+$git remote -v
+origin	git@github.com:bullitjose/hello-git.git (fetch)
+origin	git@github.com:bullitjose/hello-git.git (push)
+```
 
 # SOLID
 
