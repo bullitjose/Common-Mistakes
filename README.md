@@ -231,12 +231,104 @@ StringBuilder out = new StringBuilder();
 
 
 # Ternary operator
+El primer operand ha de ser una expressió booleana , i el segon i tercer operands poden ser qualsevol expressió que retorni algun valor. La construcció ternària retorna expression1 com a sortida si el primer operand s'avalua com a true , expression2 en cas contrari:
+
+```
+booleanExpression ? expression1 : expression2
+
+//Ex:
+final String msg = num > 10 
+  ?  "Number is greater than 10" 
+  :  "Number is less than or equal to 10";
+
+```
 
 # GENERICS
+[genericsl](https://docs.oracle.com/javase/tutorial/java/generics/types.html)
+
+>Why Use Generics?
+Els genèrics permeten que els tipus (classes i interfícies) siguin paràmetres a l'hora de definir classes, interfícies i mètodes. Igual que els paràmetres formals més familiars utilitzats en les declaracions de mètodes, els paràmetres de tipus ofereixen una manera de reutilitzar el mateix codi amb diferents entrades. La diferència és que les entrades als paràmetres formals són valors, mentre que les entrades als paràmetres de tipus són tipus.
+El codi que utilitza genèrics té molts avantatges respecte al codi no genèric:
+
+- Comprovacions de tipus més fortes en temps de compilació.
+Un compilador de Java aplica una verificació de tipus forta al codi genèric i emet errors si el codi infringeix la seguretat de tipus. Corregir errors en temps de compilació és més fàcil que corregir errors en temps d'execució, que pot ser difícil de trobar.
+
+- Eliminació de casts.
+El següent fragment de codi sense genèrics requereix de casts:
+```
+Llista de llista = new ArrayList(); 
+list.add("hola"); 
+String s = (String) list.get(0);
+```
+
+Quan es torna a escriure per utilitzar genèrics, el codi no requereix casts:
+```
+List<String> list = new ArrayList<String>(); 
+list.add("hola"); 
+String s = list.get(0); // sense cast
+```
+- Permetre als programadors implementar algorismes genèrics.
+Mitjançant l'ús de genèrics, els programadors poden implementar algorismes genèrics que funcionen en col·leccions de diferents tipus, es poden personalitzar i són segurs i fàcils de llegir.
+
+>Tipus genèrics [genericsl](https://docs.oracle.com/javase/tutorial/java/generics/types.html)
+
+
+>Type Parameter Naming Conventions
+By convention, type parameter names are single, uppercase letters. This stands in sharp contrast to the variable naming conventions that you already know about, and with good reason: Without this convention, it would be difficult to tell the difference between a type variable and an ordinary class or interface name.
+
+The most commonly used type parameter names are:
+
+E - Element (used extensively by the Java Collections Framework)
+K - Key
+N - Number
+T - Type
+V - Value
+S,U,V etc. - 2nd, 3rd, 4th types
+[Effective Java.pdf]
+ For example, the List interface has a single type parameter, E, representing its element type.
+ For example, List<String> (read “list of string”) is a parameterized type
+representing a list whose elements are of type String. (String is the actual type parameter corresponding to the formal type parameter E.)
+
+
+En afegir l'operador de diamant <> que conté el tipus, reduïm l'especialització d'aquesta llista només al tipus Enter:
+```
+List<Integer> list = new LinkedList<>();
+```
+>Mètodes genèrics.
+Escrivim mètodes genèrics amb una única declaració de mètode, i els podem cridar amb arguments de diferents tipus.
+Tingueu en compte que la recomanació d'Oracle és utilitzar una lletra majúscula per representar un tipus genèric i triar una lletra més descriptiva per representar els tipus formals. A les col·leccions Java, utilitzem T per a tipus, K per a clau i V per valor
+With generics, the type declaration contains the information, not the comment:
+
+```
+// Parameterized collection type - typesafe
+private final Collection<Stamp> stamps = ... ;
+```
+From this declaration, the compiler knows that stamps should contain only Stamp instances and guarantees it to be true, assuming your entire codebase compiles without emitting  any warnings. When stamps is
+declared with a parameterized type declaration, the erroneous insertion generates a compile-time error message that tells you exactly what is wrong:
+it is legal to use raw types (generic types without their type 
+parameters), but you should never do it. **If you use raw types, you lose all the safety and expressiveness benefits of generics.**
+
+>Raw types.
+A raw type is a name for a generic interface or class without its type argument:
+
+```
+List list = new ArrayList(); // raw type
+
+List<Integer> listIntgrs = new ArrayList<>(); // parameterized type
+```
+**List<Integer> is a parameterized type of interface List<E> while List is a raw type of interface List<E>.**
+**Els tipus en brut són difícils de treballar i poden introduir errors al nostre codi.**
+
+
+
+
+
 
 # stop using for loops
+**with: sets, maps, better use .stream()**, and .collect(Collectors.toSet())
+**also use iterator**
 
-[](https://www.youtube.com/watch?v=-640IYSEnVE&ab_channel=Amigoscode)
+[STOP USING FOR LOOPS](https://www.youtube.com/watch?v=-640IYSEnVE&ab_channel=Amigoscode)
 
-#10 BAD PROGRAMMING HABITS
-[](https://www.youtube.com/watch?v=lyx7HNufwXQ&ab_channel=Amigoscode)
+# 10 BAD PROGRAMMING HABITS
+[10 BAD PROGRAMMING HABITS](https://www.youtube.com/watch?v=lyx7HNufwXQ&ab_channel=Amigoscode)
