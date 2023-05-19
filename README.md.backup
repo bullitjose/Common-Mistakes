@@ -244,7 +244,7 @@ final String msg = num > 10
 ```
 
 # GENERICS
-[genericsl](https://docs.oracle.com/javase/tutorial/java/generics/types.html)
+
 
 >Why Use Generics?
 Els genèrics permeten que els tipus (classes i interfícies) siguin paràmetres a l'hora de definir classes, interfícies i mètodes. Igual que els paràmetres formals més familiars utilitzats en les declaracions de mètodes, els paràmetres de tipus ofereixen una manera de reutilitzar el mateix codi amb diferents entrades. La diferència és que les entrades als paràmetres formals són valors, mentre que les entrades als paràmetres de tipus són tipus.
@@ -272,8 +272,51 @@ Mitjançant l'ús de genèrics, els programadors poden implementar algorismes ge
 
 >Tipus genèrics [genericsl](https://docs.oracle.com/javase/tutorial/java/generics/types.html)
 
+Una classe Box senzilla Comenceu examinant una classe Box no genèrica que opera amb objectes de qualsevol tipus. Només necessita proporcionar dos mètodes: set , que afegeix un objecte a la caixa, i get , que el recupera:
 
+```
+public class Box { 
+    object object privat; 
+
+    public void set(Object object) { this.object = object; } 
+    objecte públic get() { objecte de retorn; } 
+}
+
+
+```
+Una versió genèrica de la classe Box
+
+**Una classe genèrica es defineix amb el format següent:**
+
+```
+nom de classe<T1, T2, ..., Tn> { /* ... */ }
+```
+
+La secció de paràmetres de tipus, delimitada per claudàtors angulars ( <> ), segueix el nom de la classe. Especifica els paràmetres de tipus (també anomenats variables de tipus ) T1 , T2 , ... i Tn .
+
+Per actualitzar la classe Box per utilitzar genèrics, creeu una declaració de tipus genèric canviant el codi " public class Box " a " public class Box<T> ". Això introdueix la variable de tipus, T , que es pot utilitzar en qualsevol lloc de la classe.
+
+Amb aquest canvi, la classe Box passa a ser:
+```
+
+/** 
+ * Versió genèrica de la classe Box. 
+ * @param <T> el tipus del valor que s'encaixa 
+ */ 
+public class Box<T> { 
+    // T significa "Type" 
+    private T t; 
+
+    public void set(T t) { this.t = t; } 
+    public T get() { return t; } 
+}
+```
+ Una variable de tipus pot ser qualsevol tipus **no primitiu**que especifiqueu: qualsevol tipus de classe, qualsevol tipus d'interfície, qualsevol tipus de matriu o fins i tot una altra variable de tipus.
+ 
+ 
+ 
 >Type Parameter Naming Conventions
+
 By convention, type parameter names are single, uppercase letters. This stands in sharp contrast to the variable naming conventions that you already know about, and with good reason: Without this convention, it would be difficult to tell the difference between a type variable and an ordinary class or interface name.
 
 The most commonly used type parameter names are:
@@ -284,7 +327,64 @@ N - Number
 T - Type
 V - Value
 S,U,V etc. - 2nd, 3rd, 4th types
-[Effective Java.pdf]
+
+>Invocació i instància d'un tipus genèric
+Per fer referència a la classe Box genèrica des del vostre codi, heu de realitzar una invocació de tipus genèric , que substitueixi T amb algun valor concret, com ara Integer :
+
+```
+Box<Enter> integerBox;
+```
+Podeu pensar que una invocació de tipus genèric és similar a una invocació de mètode ordinària, però en comptes de passar un argument a un mètode, esteu passant un argument de tipus ( Enter en aquest cas) a la pròpia classe Box .
+Com qualsevol altra declaració de variable, aquest codi en realitat no crea un nou objecte Box . Simplement declara que integerBox mantindrà una referència a un " Box of Integer ", que és com es llegeix Box<Integer> .
+
+Una invocació d'un tipus genèric es coneix generalment com a tipus parametritzat .
+
+>El Diamant <>
+
+Podeu substituir els arguments de tipus necessaris per invocar el constructor d'una classe genèrica per un conjunt buit d'arguments de tipus (<>) sempre que el compilador pugui determinar, o inferir, els arguments de tipus a partir del context. . Aquest parell de mènsules angulars, <>, s'anomena informalment el diamant . Per exemple, podeu crear una instància de Box<Integer> amb la instrucció següent:
+
+
+```
+Box<Enter> integerBox = new Box<>();
+```
+
+>Múltiples paràmetres de tipus
+
+Com s'ha esmentat anteriorment, una classe genèrica pot tenir diversos paràmetres de tipus. Per exemple, la classe genèrica OrderedPair , que implementa la interfície genèrica Pair :
+```
+
+interfície pública Pair<K, V> { 
+    public K getKey(); 
+    public V getValue(); 
+} 
+
+classe pública OrderedPair<K, V> implementa Pair<K, V> { 
+
+    clau privada K; 
+    valor V privat; 
+
+    public OrderedPair (clau K, valor V) { 
+	this.key = clau; 
+	this.value = valor; 
+    } 
+
+    public K getKey() { clau de retorn; } 
+    public V getValue() { valor de retorn; } 
+}
+```
+Les declaracions següents creen dues instàncies de la classe OrderedPair :
+
+Pair<String, Integer> p1 = new OrderedPair<String, Integer>("Parell", 8); 
+Pair<String, String> p2 = new OrderedPair<String, String>("hola", "món");
+
+Com s'esmenta a The Diamond , com que un compilador Java pot inferir els tipus K i V de la declaració OrderedPair<String, Integer> , aquestes declaracions es poden escurçar utilitzant la notació de diamant:
+```
+
+OrderedPair<String, Integer> p1 = new OrderedPair <> ("Parell", 8); 
+OrderedPair<String, String> p2 = new OrderedPair <> ("hola", "món");
+```
+
+
  For example, the List interface has a single type parameter, E, representing its element type.
  For example, List<String> (read “list of string”) is a parameterized type
 representing a list whose elements are of type String. (String is the actual type parameter corresponding to the formal type parameter E.)
@@ -296,7 +396,98 @@ List<Integer> list = new LinkedList<>();
 ```
 >Mètodes genèrics.
 Escrivim mètodes genèrics amb una única declaració de mètode, i els podem cridar amb arguments de diferents tipus.
-Tingueu en compte que la recomanació d'Oracle és utilitzar una lletra majúscula per representar un tipus genèric i triar una lletra més descriptiva per representar els tipus formals. A les col·leccions Java, utilitzem T per a tipus, K per a clau i V per valor
+Tingueu en compte que la recomanació d'Oracle és utilitzar una lletra majúscula per representar un tipus genèric i triar una lletra més descriptiva per representar els tipus formals. A les col·leccions Java, utilitzem T per a tipus, K per a clau i V per valor.
+
+>Tipus crus o Raw types.
+
+Un tipus en brut és el nom d'una classe o interfície genèrica **sense cap argument de tipus**. Per exemple, donada la classe Box genèrica :
+
+```
+public class Box<T> {
+   public void set (T t) { /* ... */ }
+    //...
+}
+```
+
+Per crear un tipus parametritzat de Box<T> , proporcioneu un argument de tipus real per al paràmetre de tipus formal T :
+```
+Box<Integer> intBox = new Box<>();
+```
+Si s'omet l'argument del tipus real, creeu un tipus brut de Box<T> :
+```
+Box  rawBox = new Box ();
+```
+
+Per tant, **Box és el tipus en brut del tipus genèric Box<T>** . Tanmateix, una classe no genèrica o un tipus d'interfície no és un tipus en brut.
+
+>Wildcards o Comodins
+
+En el codi genèric, el signe d'interrogació ( ? ), anomenat comodí , representa un tipus desconegut. El comodí es pot utilitzar en una varietat de situacions: com a tipus de paràmetre, camp o variable local; de vegades com a tipus de retorn. El comodí no s'utilitza mai com a argument de tipus per a una invocació de mètode genèric, la creació d'una instància de classe genèrica o un supertipus.
+
+>Upper Bounded Wildcards o comodins amb limit superior
+You can use an upper bounded wildcard to relax the restrictions on a variable. For example, say you want to write a method that works on List<Integer>, List<Double>, and List<Number>; you can achieve this by using an upper bounded wildcard.
+
+To declare an upper-bounded wildcard, use the wildcard character ('?'), followed by the extends keyword, followed by its upper bound. Note that, in this context, extends is used in a general sense to mean either "extends" (as in classes) or "implements" (as in interfaces).
+
+To write the method that works on lists of Number and the subtypes of Number, such as Integer, Double, and Float, you would specify **List<? extends Number>**. The term List<Number> is more restrictive than List<? extends Number> because the former matches a list of type Number only, whereas the latter matches a list of type Number or any of its subclasses.
+
+>Unbounded Wildcards o Comodins il·limitats
+El tipus de comodí il·limitat s'especifica mitjançant el caràcter comodí ( ? ), per exemple, List<?> . Això s'anomena llista de tipus desconegut . Hi ha dos escenaris en què un comodí il·limitat és un enfocament útil:
+
+- Si esteu escrivint un mètode que es pot implementar mitjançant la funcionalitat proporcionada a la classe Object .
+- Quan el codi utilitza mètodes de la classe genèrica que no depenen del paràmetre tipus. Per exemple, List.size o List.clear . De fet, Class<?> s'utilitza sovint perquè la majoria dels mètodes de Class<T> no depenen de T .
+
+>Restriccions als genèrics
+
+Per utilitzar els genèrics Java de manera eficaç, heu de tenir en compte les restriccions següents:
+
+- No es poden instanciar tipus genèrics amb tipus primitius
+
+    When creating a Pair object, you cannot substitute a primitive type for the type parameter K or V:
+    
+    ```
+    Pair<int, char> p = new Pair<>(8, 'a');  // compile-time error
+    ```
+    
+    You can substitute only non-primitive types for the type parameters K and V:
+    ```
+    
+    Pair<Integer, Character> p = new Pair<>(8, 'a');
+    ```
+    
+    Note that the Java compiler autoboxes 8 to Integer.valueOf(8) and 'a' to Character('a'):
+    
+    You cannot create an instance of a type parameter. For example, the following code causes a compile-time error:
+    ```
+    public static <E> void append(List<E> list) {
+        E elem = new E();  // compile-time error
+        list.add(elem);
+    }
+    ```
+    
+    As a workaround, you can create an object of a type parameter through reflection:
+   
+  ```  
+    public static <E> void append(List<E> list, Class<E> cls) throws Exception {
+        E elem = cls.newInstance();   // OK
+        list.add(elem);
+    }
+    ```
+- No es poden crear instàncies de paràmetres de tipus
+
+
+- No es poden declarar camps estàtics els tipus dels quals són paràmetres de tipus
+- No es poden utilitzar casts o instanceof amb tipus parametritzats
+- No es poden crear matrius de tipus parametritzats
+     You cannot create arrays of parameterized types. For example, the following code does not compile:
+```
+List<Integer>[] arrayOfLists = new List<Integer>[2];  // compile-time error
+```
+- No es poden crear, atrapar o llançar objectes de tipus parametritzats
+- No es pot sobrecarregar un mètode on els tipus de paràmetres formals de cada sobrecàrrega s'esborren al mateix tipus en brut
+
+
+
 With generics, the type declaration contains the information, not the comment:
 
 ```
@@ -319,10 +510,52 @@ List<Integer> listIntgrs = new ArrayList<>(); // parameterized type
 **List<Integer> is a parameterized type of interface List<E> while List is a raw type of interface List<E>.**
 **Els tipus en brut són difícils de treballar i poden introduir errors al nostre codi.**
 
+> How to **(Items) maximize the benefits and minimize the complications with generics**, you tell the compiler what types of objects are permitted in each collection.
+[Effective Java.pdf]
 
+ >Item 28: Prefer lists to arrays
+        
+ >Item 29: Favor generic types
+        
+Generic types are safer and easier to use than types that require casts in client code. When you design new types, make sure that they can be used without such casts. This will often mean making the types generic. If you have any existing types that should be generic but aren’t, generify them. This will make life easier for new users of these types without breaking existing clients (Item 26).
+       > Item 30: Favor generic methods
+         The most commonly used type parameter names are:
+    
+  E - Element (used extensively by the Java Collections Framework)
+  K - Key
+  N - Number
+  T - Type
+  V - Value
+   S,U,V etc. - 2nd, 3rd, 4th types
+   
+ Just as classes can be generic, so can methods. Static utility methods that operate on parameterized types are usually generic. All of the “algorithm” methods in Collections (such as binarySearch and sort) are generic.
+         
+    ```
+         // Generic method
+public static <E> Set<E> union(Set<E> s1, Set<E> s2) {
+Set<E> result = new HashSet<>(s1);
+result.addAll(s2);
+return result;
+}
+     
+   modify its declaration to declare a type parameter representing the element type for the three sets (the two arguments and the return value) and use this type parameter throughout  the method. The type parameter list, which declares the type parameters, goes between a method’s modifiers and its return type. In this example,**the type parameter list is <E>, and the return type is Set<E>.**
+  
+   ```
+   // Generic method
+public static <E> Set<E> union(Set<E> s1, Set<E> s2) {
+Set<E> result = new HashSet<>(s1);
+result.addAll(s2);
+return result;
+}
+```
 
-
-
+   > Item 31: Use bounded wildcards to increase API flexibility
+      
+ > Item 32: Combine generics and varargs judiciously
+ 
+ >Item 33: Consider typesafe heterogeneous containers
+   
+   
 
 # stop using for loops
 **with: sets, maps, better use .stream()**, and .collect(Collectors.toSet())
@@ -332,3 +565,4 @@ List<Integer> listIntgrs = new ArrayList<>(); // parameterized type
 
 # 10 BAD PROGRAMMING HABITS
 [10 BAD PROGRAMMING HABITS](https://www.youtube.com/watch?v=lyx7HNufwXQ&ab_channel=Amigoscode)
+
